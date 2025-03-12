@@ -1,0 +1,16 @@
+{
+  "race": "Latino_Hispanic",
+  "race_probs": {
+    "White": 0.06685458868741989,
+    "Black": 0.0016390520613640547,
+    "Latino_Hispanic": 0.6323169469833374,
+    "East Asian": 0.10241376608610153,
+    "Southeast Asian": 0.18104656040668488,
+    "Indian": 0.014150543138384819,
+    "Middle Eastern": 0.0015785777941346169
+  },
+  "gender": "Female",
+  "gender_prob": 0.9998922944068909,
+  "age": "20-29",
+  "age_prob": 0.7401852011680603
+}

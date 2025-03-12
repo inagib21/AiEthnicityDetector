@@ -1,47 +1,39 @@
-<p align="center">
-  <a href="https://nextjs-fastapi-starter.vercel.app/">
-    <img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96">
-    <h3 align="center">Next.js FastAPI Starter</h3>
-  </a>
-</p>
+# AI Face Analysis
 
-<p align="center">Simple Next.j 14 boilerplate that uses <a href="https://fastapi.tiangolo.com/">FastAPI</a> as the API backend.</p>
+Advanced facial recognition powered by machine learning. Upload a photo or take one with your camera to analyze facial features, demographics, and more.
 
-<br/>
+## Features
 
-## Introduction
+*   **Facial Detection:** Accurate face detection and alignment for optimal analysis.
+*   **Detailed Analysis:** Get insights on age, gender, and ethnicity with confidence scores.
+*   **AI Powered:** Utilizing advanced machine learning models for accurate results.
 
-This is a hybrid Next.js 14 + Python template. One great use case of this is to write Next.js apps that use Python AI libraries on the backend, while still having the benefits of Next.js Route Handlers and Server Side Rendering.
 
-## How It Works
 
-The Python/FastAPI server is mapped into to Next.js app under `/api/`.
+## Dataset Information
 
-This is implemented using [`next.config.js` rewrites](https://github.com/digitros/nextjs-fastapi/blob/main/next.config.js) to map any request to `/api/py/:path*` to the FastAPI API, which is hosted in the `/api` folder.
+The demographic analysis (age, gender, and ethnicity) is based on models trained using the FairFace dataset [@karkkainenfairface]. This dataset was specifically designed for balanced representation across race, gender, and age to mitigate bias in facial analysis.
 
-Also, the app/api routes are available on the same domain, so you can use NextJs Route Handlers and make requests to `/api/...`.
 
-On localhost, the rewrite will be made to the `127.0.0.1:8000` port, which is where the FastAPI server is running.
+**FairFace Paper:** [Karkkainen_FairFace_Face_Attribute_Dataset_for_Balanced_Race_Gender_and_Age_WACV_2021_paper](https://openaccess.thecvf.com/content/WACV2021/papers/Karkkainen_FairFace_Face_Attribute_Dataset_for_Balanced_Race_Gender_and_Age_WACV_2021_paper.pdf)
 
-In production, the FastAPI server is hosted as [Python serverless functions](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python) on Vercel.
 
-## Demo
+## Model Performance and Statistics
 
-https://nextjs-fastapi-starter.vercel.app/
+The AI Face Analysis model utilizes a ResNet-34 architecture and was trained using the FairFace dataset.  Here's a breakdown of its performance on various datasets, including cross-dataset evaluations:
 
-## Deploy Your Own
+**(Show Table 2 from the paper here - Race Classification Results)**
 
-You can clone & deploy it to Vercel with one click:
+**(Show Table 3 from the paper here - Gender and Age Classification Results)**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdigitros%2Fnextjs-fastapi%2Ftree%2Fmain)
+*Key points from the paper:*
 
-## Developing Locally
+*   The model generally performs best on the dataset it was trained on.
+*   The FairFace-trained model achieved high accuracy across various demographics, sometimes exceeding the performance of models trained on other datasets, particularly on the LFWA+ dataset. The paper suggests this is due to FairFace's greater diversity and reduced bias compared to datasets like LFWA+.
+*   FairFace includes 7 racial categories, which were merged for compatibility when testing on datasets with fewer categories.
+*   CelebA was used for gender classification but does not include race annotations.
 
-You can clone & create this repo with the following command
-
-```bash
-npx create-next-app nextjs-fastapi --example "https://github.com/digitros/nextjs-fastapi"
-```
+*Additional Notes:*  The results presented are from the paper "FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation" by Karkkainen and Joo (2021).  For a complete understanding of the methodology and results, please refer to the original publication: [Link to Paper]
 
 ## Getting Started
 
@@ -76,12 +68,3 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The FastApi server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [FastAPI Documentation](https://fastapi.tiangolo.com/) - learn about FastAPI features and API.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
