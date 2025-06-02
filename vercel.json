@@ -3,7 +3,11 @@
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python"
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "./build.sh",
+        "zeroConfig": true
+      }
     },
     {
       "src": "package.json",
@@ -16,7 +20,7 @@
   "routes": [
     {
       "src": "/api/py/(.*)",
-      "dest": "/api/index?path=$1"
+      "dest": "/api/index.py"
     },
     {
       "src": "/(.*)",
