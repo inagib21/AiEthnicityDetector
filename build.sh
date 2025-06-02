@@ -28,21 +28,21 @@ if [ "$CMAKE_PATH" != "cmake_not_found" ] && [ -x "$CMAKE_PATH" ]; then
     echo "Exporting CMAKE_EXECUTABLE=$CMAKE_PATH"
     export CMAKE_EXECUTABLE="$CMAKE_PATH"
     echo "CMAKE_EXECUTABLE is now: $CMAKE_EXECUTABLE"
-else
-    echo "WARNING: CMake not found or not executable at the expected location after installation."
-fi
 
-# Ensure /usr/bin is prioritized in PATH (attempt from previous step, kept for good measure)
-if [[ -x "/usr/bin/cmake" ]]; then
-    echo "Found /usr/bin/cmake. Ensuring /usr/bin is in PATH."
+    # Ensure /usr/bin is prioritized in PATH
     if [[ ":$PATH:" != *":/usr/bin:"* ]]; then
+        echo "Prepending /usr/bin to PATH."
         export PATH="/usr/bin:$PATH"
         echo "Updated PATH: $PATH"
     else
         echo "/usr/bin already in PATH: $PATH"
     fi
+
+    echo "Attempting to install dlib directly using pip..."
+    pip3 install --disable-pip-version-check --verbose --target . dlib==20.0.0
+    echo "dlib installation attempt finished."
 else
-    echo "WARNING: /usr/bin/cmake not found or not executable. Cannot ensure it is in PATH."
+    echo "WARNING: CMake not found or not executable. Skipping dlib installation within build.sh."
 fi
 
-echo "BUILD.SH (for @vercel/python) EXECUTION FINISHED. Proceeding to Vercel's pip install." 
+echo "BUILD.SH (for @vercel/python) EXECUTION FINISHED. Proceeding to Vercel's main pip install." 
