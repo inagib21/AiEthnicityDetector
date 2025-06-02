@@ -2,10 +2,10 @@ fastapi==0.115.0
 uvicorn[standard]==0.30.6
 python-multipart
 pillow
---index-url https://download.pytorch.org/whl/cpu
-torch==2.6.0
-torchvision==0.21.0
 dlib
 numpy
 opencv-python
 cmake
+--index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0
+torchvision==0.21.0
