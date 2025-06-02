@@ -1,11 +1,24 @@
 #!/bin/bash
+# Exit immediately if a command exits with a non-zero status, and print each command before executing it.
+set -ex
 
-# Exit immediately if a command exits with a non-zero status.
-set -e
+echo "BUILD.SH SCRIPT EXECUTION STARTED"
 
-echo "build.sh: Updating package list and installing system dependencies (cmake, build-essential)..."
-apt-get update -y && apt-get install -y cmake build-essential
-echo "build.sh: System dependencies installation complete."
+echo "Running apt-get update..."
+apt-get update -y
+
+echo "APT-GET UPDATE FINISHED"
+
+echo "Installing cmake and build-essential..."
+apt-get install -y cmake build-essential
+
+echo "APT-GET INSTALL CMAKE BUILD-ESSENTIAL FINISHED"
+
+echo "Verifying cmake installation..."
+which cmake
+cmake --version
+
+echo "CMAKE INFO PRINTED. BUILD.SH SCRIPT EXECUTION FINISHED."
 
 # Upgrade pip and install Python dependencies
 echo "Installing Python dependencies..."
