@@ -16,33 +16,33 @@ echo "Installing cmake and build-essential..."
 apt-get install -y cmake build-essential
 echo "APT-GET INSTALL CMAKE BUILD-ESSENTIAL FINISHED"
 
-echo "Verifying cmake installation (Attempt 1)..."
-CMAKE_LOCATION_ATTEMPT_1=$(which cmake || echo "cmake_not_found")
-echo "cmake location (Attempt 1): $CMAKE_LOCATION_ATTEMPT_1"
-if [ "$CMAKE_LOCATION_ATTEMPT_1" != "cmake_not_found" ]; then
-    echo "cmake version (Attempt 1):"
-    cmake --version
+echo "Verifying cmake installation..."
+CMAKE_PATH=$(which cmake || echo "cmake_not_found")
+echo "cmake path: $CMAKE_PATH"
+
+if [ "$CMAKE_PATH" != "cmake_not_found" ] && [ -x "$CMAKE_PATH" ]; then
+    echo "CMake found at $CMAKE_PATH and is executable."
+    echo "CMake version:"
+    "$CMAKE_PATH" --version
+    
+    echo "Exporting CMAKE_EXECUTABLE=$CMAKE_PATH"
+    export CMAKE_EXECUTABLE="$CMAKE_PATH"
+    echo "CMAKE_EXECUTABLE is now: $CMAKE_EXECUTABLE"
 else
-    echo "cmake not found at Attempt 1."
+    echo "WARNING: CMake not found or not executable at the expected location after installation."
 fi
 
-# Ensure /usr/bin is prioritized in PATH
+# Ensure /usr/bin is prioritized in PATH (attempt from previous step, kept for good measure)
 if [[ -x "/usr/bin/cmake" ]]; then
-    echo "Found /usr/bin/cmake. Prepending /usr/bin to PATH."
-    export PATH="/usr/bin:$PATH"
-    echo "Updated PATH: $PATH"
-
-    echo "Verifying cmake installation (Attempt 2, after PATH modification)..."
-    CMAKE_LOCATION_ATTEMPT_2=$(which cmake || echo "cmake_not_found_post_path_mod")
-    echo "cmake location (Attempt 2): $CMAKE_LOCATION_ATTEMPT_2"
-    if [ "$CMAKE_LOCATION_ATTEMPT_2" != "cmake_not_found_post_path_mod" ]; then
-        echo "cmake version (Attempt 2):"
-        cmake --version
+    echo "Found /usr/bin/cmake. Ensuring /usr/bin is in PATH."
+    if [[ ":$PATH:" != *":/usr/bin:"* ]]; then
+        export PATH="/usr/bin:$PATH"
+        echo "Updated PATH: $PATH"
     else
-        echo "cmake not found at Attempt 2."
+        echo "/usr/bin already in PATH: $PATH"
     fi
 else
-    echo "WARNING: /usr/bin/cmake not found or not executable. Cannot prepend to PATH."
+    echo "WARNING: /usr/bin/cmake not found or not executable. Cannot ensure it is in PATH."
 fi
 
 echo "BUILD.SH (for @vercel/python) EXECUTION FINISHED. Proceeding to Vercel's pip install." 
