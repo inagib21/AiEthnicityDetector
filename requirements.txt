@@ -6,7 +6,6 @@ pillow
 dlib
 numpy
 opencv-python
-cmake
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.6.0
 torchvision==0.21.0
