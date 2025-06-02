@@ -2,13 +2,12 @@
 const nextConfig = {
   rewrites: async () => {
     return [
-      // Keep existing routes
       {
         source: "/api/py/:path*",
         destination:
           process.env.NODE_ENV === "development"
             ? "http://127.0.0.1:8000/api/py/:path*"
-            : "/api/",
+            : "/api/py/:path*",
       },
       {
         source: "/docs",
@@ -23,7 +22,6 @@ const nextConfig = {
           process.env.NODE_ENV === "development"
             ? "http://127.0.0.1:8000/api/py/openapi.json"
             : "/api/py/openapi.json",
-           
       },
       // Add our new face analysis routes
       {

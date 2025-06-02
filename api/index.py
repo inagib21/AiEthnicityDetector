@@ -15,16 +15,26 @@ import json
 app = FastAPI()
 
 # CORS settings
+# Get VERCEL_URL from environment, default to localhost for local dev
+vercel_url = os.environ.get("VERCEL_URL")
+allowed_origins = ["http://localhost:3000"]
+if vercel_url:
+    allowed_origins.append(f"https://{vercel_url}")
+    # Also allow the preview URL format if applicable (often includes project name and git branch)
+    # This might need refinement based on your specific Vercel setup / custom domains
+    # For a more general approach, you might have a NEXT_PUBLIC_APP_URL env var set in Vercel and locally
+    # Example: allowed_origins.append(f"https://{os.environ.get('NEXT_PUBLIC_APP_URL')}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Path setup
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Project root
 FAIRFACE_DIR = os.path.join(BASE_DIR, 'FairFace')
 MODEL_PATH = os.path.join(FAIRFACE_DIR, 'fair_face_models', 'fairface_alldata_20191111.pt')
 FACE_DETECTOR_PATH = os.path.join(FAIRFACE_DIR, 'dlib_models', 'mmod_human_face_detector.dat')
@@ -65,7 +75,7 @@ except Exception as e:
     raise
 
 # Create albums directory
-ALBUMS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'albums')
+ALBUMS_DIR = os.path.join(BASE_DIR, 'albums') # Corrected BASE_DIR will be used here
 os.makedirs(ALBUMS_DIR, exist_ok=True)
 
 # Image transformation pipeline
@@ -142,7 +152,7 @@ def predict_age_gender_race(face_img, device):
         print(f"Error in prediction: {str(e)}")
         raise
 
-@app.get("/api/py/health")
+@app.get("/py/health")
 async def health_check():
     return {
         "status": "healthy",
@@ -151,7 +161,7 @@ async def health_check():
         "albums_dir": ALBUMS_DIR
     }
 
-@app.post("/api/py/analyze-face")
+@app.post("/py/analyze-face")
 async def analyze_face(file: UploadFile = File(...)):
     temp_file_path = None
     try:
@@ -219,7 +229,7 @@ async def analyze_face(file: UploadFile = File(...)):
         # Make sure file is closed
         await file.close()
 
-@app.post("/api/py/cleanup")
+@app.post("/py/cleanup")
 async def cleanup_memory():
     """Emergency cleanup endpoint"""
     try:
@@ -230,7 +240,7 @@ async def cleanup_memory():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
-@app.post("/api/py/save-analysis")
+@app.post("/py/save-analysis")
 async def save_analysis(data: dict):
     try:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
